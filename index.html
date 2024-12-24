@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vœux de Noël</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Ajout des nouveaux styles au début */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #165b33, #1a472a);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s;
+        }
+
+        #loader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #countdown {
+            font-size: 15vw;
+            font-family: 'Mountains of Christmas', cursive;
+            color: var(--text-gold);
+            text-shadow: 
+                0 0 20px rgba(255, 215, 0, 0.5),
+                0 0 40px rgba(255, 0, 0, 0.3);
+            animation: countPulse 1s infinite;
+        }
+
+        @keyframes countPulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        #loader-text {
+            font-size: 2.5em;
+            color: white;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        :root {
+            --primary-color: #d4af37;  /* Or de Noël */
+            --secondary-color: #165b33; /* Vert sapin */
+            --text-gold: #ffd700;
+            --text-red: #ce2029;
+        }
+
+        body {
+            font-family: 'Mountains of Christmas', cursive;
+            text-align: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                        url('santa.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            display: grid;
+            place-items: center;
+        }
+
+        .snowflake {
+            color: white;
+            position: fixed;
+            top: -10%;
+            z-index: 1;
+            user-select: none;
+            animation: snowfall linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes snowfall {
+            to { top: 100%; }
+        }
+
+        h1 {
+            font-size: clamp(3em, 8vw, 5em);
+            background: linear-gradient(45deg, var(--text-gold), #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
+            margin: 0.5em 0;
+        }
+
+        form {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1.5rem;
+            border-radius: 15px;
+            width: min(300px, 90%);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+        }
+
+        label {
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border: 2px solid var(--secondary-color);
+            border-radius: 5px;
+        }
+
+        button {
+            background: linear-gradient(45deg, var(--text-red), #ff4d4d);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1.2em;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+
+        #greetingMessage {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1.5rem;
+            border-radius: 15px;
+            width: min(300px, 90%);
+            margin: 1rem auto;
+            opacity: 0;
+            transition: opacity 0.5s;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+        }
+
+        #greetingMessage.visible {
+            opacity: 1;
+        }
+
+        #greetingMessage h2 {
+            color: var(--text-red);
+            font-size: 1.8em;
+            margin-bottom: 0.5em;
+        }
+
+        #greetingMessage p {
+            color: var(--secondary-color);
+            font-size: 1.3em;
+        }
+
+        .santa-image {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 150px;
+            height: auto;
+            animation: santaFloat 3s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes santaFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .name-highlight {
+            font-size: 2.2em;
+            color: var(--text-gold);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: glow 2s ease-in-out infinite;
+            padding: 0.2em;
+            display: inline-block;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 5px var(--text-gold); }
+            50% { text-shadow: 0 0 20px var(--text-gold), 0 0 30px var(--text-red); }
+        }
+
+        .music-control {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            border: 2px solid var(--text-gold);
+            font-size: 1.5em;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Ajout du loader au début du body -->
+    <div id="loader">
+        <div id="countdown">5</div>
+        <div id="loader-text">🎄 Préparation de la magie de Noël... 🎄</div>
+    </div>
+
+    <button class="music-control" id="musicToggle">🎵</button>
+    <audio id="backgroundMusic" loop>
+        <!-- Remplacez l'URL par celle d'une vraie musique de Noël -->
+        <source src="jingle-bells.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="snowContainer"></div>
+    <h1>✨ Joyeux Noël ! ✨</h1>
+
+    <form id="nameForm">
+        <label for="firstName">Entrez votre prénom :</label>
+        <input type="text" id="firstName" required minlength="2" maxlength="30">
+        <button type="submit">🎄 Envoyer</button>
+    </form>
+
+    <div id="greetingMessage"></div>
+
+    <script>
+        // Ajout du code de compte à rebours au début du script
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = document.getElementById('loader');
+            const countdown = document.getElementById('countdown');
+            const mainContent = document.querySelector('body');
+            let timeLeft = 5;
+
+            // Cache le contenu principal pendant le compte à rebours
+            mainContent.style.opacity = '0';
+            
+            // Animation du compte à rebours
+            const countdownTimer = setInterval(() => {
+                timeLeft--;
+                countdown.innerHTML = `<div style="transform: scale(${1 + (5-timeLeft)*0.1})">${timeLeft}</div>`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    loader.classList.add('fade-out');
+                    mainContent.style.opacity = '1';
+                    mainContent.style.transition = 'opacity 1s';
+                    
+                    // Supprime le loader après la transition
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 1000);
+                }
+            }, 1000);
+
+            const snow = document.getElementById('snowContainer');
+            // Création des flocons avec tailles variables
+            const flakeStyles = [
+                { size: '1.2em', duration: '8s' },
+                { size: '1em', duration: '10s' },
+                { size: '0.8em', duration: '12s' },
+                { size: '1.5em', duration: '9s' },
+                { size: '0.6em', duration: '11s' }
+            ];
+
+            for(let i = 0; i < 30; i++) {
+                const flake = document.createElement('div');
+                const style = flakeStyles[Math.floor(Math.random() * flakeStyles.length)];
+                
+                flake.className = 'snowflake';
+                flake.style.left = `${Math.random() * 100}vw`;
+                flake.style.fontSize = style.size;
+                flake.style.animationDuration = style.duration;
+                flake.style.animationDelay = `${Math.random() * 5}s`;
+                flake.innerHTML = Math.random() > 0.5 ? '❅' : '❆';
+                
+                snow.appendChild(flake);
+            }
+
+            // Gestion du formulaire
+            const form = document.getElementById('nameForm');
+            const message = document.getElementById('greetingMessage');
+
+            // Modification de la gestion de la musique
+            const musicToggle = document.getElementById('musicToggle');
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            let isMusicPlaying = false;
+
+            // Préchargement de la musique
+            backgroundMusic.load();
+            
+            musicToggle.addEventListener('click', () => {
+                if (isMusicPlaying) {
+                    backgroundMusic.pause();
+                    musicToggle.textContent = '🎵';
+                } else {
+                    backgroundMusic.play().catch(e => console.log("Erreur lecture audio:", e));
+                    musicToggle.textContent = '⏸';
+                }
+                isMusicPlaying = !isMusicPlaying;
+            });
+
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                const name = document.getElementById('firstName').value.trim();
+                if(!name) return;
+
+                const formattedName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+                message.innerHTML = `
+                    <h2>🎄 Ho Ho Ho !</h2>
+                    <h2>Joyeux Noël, <span class="name-highlight">${formattedName}</span> !</h2>
+                    <p>✨ Que la magie des fêtes illumine tes journées ✨</p>
+                    <p style="color: var(--text-gold);">🎁 Pleins de cadeaux et de bonheur ! 🎁</p>
+                `;
+                message.classList.add('visible');
+                form.reset();
+
+                // Démarrage automatique de la musique lors de la soumission
+                if (!isMusicPlaying) {
+                    backgroundMusic.play();
+                    musicToggle.textContent = '⏸';
+                    isMusicPlaying = true;
+                }
+            };
+        });
+    </script>
+</body>
+</html>
